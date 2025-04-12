@@ -13,7 +13,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('https://radiant-skincare-api.up.railway.app/api/user/me', {
+        const res = await fetch('https://railway-production-0187.up.railway.app/api/user/me', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -47,7 +47,7 @@ function Profile() {
 
   const updateProfile = async () => {
     try {
-      const res = await fetch('https://radiant-skincare-api.up.railway.app/api/user/update-profile', {
+      const res = await fetch('https://railway-production-0187.up.railway.app/api/user/update-profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function Profile() {
 
       const data = await res.json();
       if (res.ok) {
-        toast.success(data.message || 'Profile updated successfully');
+        toast.success('Profile updated successfully');
         window.dispatchEvent(new Event('profileUpdated'));
       } else {
         toast.error(data.message || 'Profile update failed');
@@ -71,7 +71,7 @@ function Profile() {
 
   const changePassword = async () => {
     try {
-      const res = await fetch('https://radiant-skincare-api.up.railway.app/api/user/change-password', {
+      const res = await fetch('https://railway-production-0187.up.railway.app/api/user/change-password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ function Profile() {
 
       const data = await res.json();
       if (res.ok) {
-        toast.success(data.message || 'Password changed successfully');
+        toast.success('Password changed successfully');
         setPasswords({ currentPassword: '', newPassword: '' });
       } else {
         toast.error(data.message || 'Password change failed');
@@ -151,3 +151,4 @@ function Profile() {
 }
 
 export default Profile;
+
