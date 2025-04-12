@@ -1,18 +1,30 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
-// ✅ Use .env variable
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+// ✅ Updated API base URL (with fallback)
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "https://railway-production-0187.up.railway.app/api";
 
-const OTPVerification = ({ email }) => {
+const OTPVerification = () => {
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // ✅ Get email from location state
+  const email = location.state?.email;
 
   const handleVerify = async (e) => {
     e.preventDefault();
+
+    if (!email) {
+      alert("Email not found. Please register again.");
+      navigate("/register");
+      return;
+    }
+
     try {
-      const res = await axios.post(`${API_BASE_URL}/verify-otp`, {
+      const res = await axios.post(`${API_BASE_URL}/auth/verify-otp`, {
         email,
         otp,
       });
@@ -22,7 +34,6 @@ const OTPVerification = ({ email }) => {
     } catch (err) {
       console.error("OTP verification error:", err);
 
-      // More detailed fallback message
       if (err.response) {
         alert(err.response.data.message || "Invalid OTP. Please try again.");
       } else if (err.request) {
@@ -38,7 +49,7 @@ const OTPVerification = ({ email }) => {
       <div className="verify-box">
         <h2>Verify Your Email</h2>
         <p className="subtitle">
-          Enter the OTP sent to <strong>{email}</strong>
+          Enter the OTP sent to <strong>{email || "your email"}</strong>
         </p>
         <form onSubmit={handleVerify}>
           <input
@@ -59,3 +70,4 @@ const OTPVerification = ({ email }) => {
 };
 
 export default OTPVerification;
+
