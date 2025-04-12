@@ -4,6 +4,7 @@ import './Login.css';
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || 'https://railway-production-0187.up.railway.app/api';
+const AUTH_API = `${API_BASE_URL}/auth`;
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -19,7 +20,7 @@ const Login = () => {
     setError('');
 
     try {
-      const res = await fetch(`${API_BASE_URL}/login`, {
+      const res = await fetch(`${AUTH_API}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +45,6 @@ const Login = () => {
         );
 
         window.dispatchEvent(new Event('storage'));
-
         navigate('/dashboard');
       }
     } catch (err) {
@@ -93,4 +93,5 @@ const Login = () => {
 };
 
 export default Login;
+
 
