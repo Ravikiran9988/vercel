@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// Optional: You can also move the base URL to a config file
-const API_BASE_URL = "https://railway-production-0187.up.railway.app/api";
+// ✅ Use .env variable
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const OTPVerification = ({ email }) => {
   const [otp, setOtp] = useState("");
@@ -21,7 +21,15 @@ const OTPVerification = ({ email }) => {
       navigate("/login");
     } catch (err) {
       console.error("OTP verification error:", err);
-      alert(err.response?.data?.message || "Invalid OTP. Please try again.");
+
+      // More detailed fallback message
+      if (err.response) {
+        alert(err.response.data.message || "Invalid OTP. Please try again.");
+      } else if (err.request) {
+        alert("Network error. Please check your internet connection.");
+      } else {
+        alert("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
@@ -29,7 +37,9 @@ const OTPVerification = ({ email }) => {
     <div className="verify-container">
       <div className="verify-box">
         <h2>Verify Your Email</h2>
-        <p className="subtitle">Enter the OTP sent to <strong>{email}</strong></p>
+        <p className="subtitle">
+          Enter the OTP sent to <strong>{email}</strong>
+        </p>
         <form onSubmit={handleVerify}>
           <input
             type="text"
