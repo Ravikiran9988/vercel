@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css'; // adjust path if needed
+import './Login.css';
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+  import.meta.env.VITE_API_BASE_URL || 'https://railway-production-0187.up.railway.app/api';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -17,24 +17,31 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
     try {
       const res = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(form),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.message || 'Something went wrong');
+        setError(data.message || 'Invalid credentials');
         return;
       }
 
+      // Save token and user info in local storage
       if (data.token) {
         localStorage.setItem('token', data.token);
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('username', data.user?.name || data.user?.email || form.email);
+        localStorage.setItem(
+          'username',
+          data.user?.name || data.user?.email || form.email
+        );
 
         window.dispatchEvent(new Event('storage'));
 
@@ -86,3 +93,4 @@ const Login = () => {
 };
 
 export default Login;
+
