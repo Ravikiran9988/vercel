@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import './Login.css'; // or adjust path if it's in styles folder
+import './Login.css'; // adjust path if needed
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -14,10 +17,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    const endpoint = '/api/login';
-
     try {
-      const res = await fetch(`http://localhost:5000${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -35,7 +36,6 @@ const Login = () => {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', data.user?.name || data.user?.email || form.email);
 
-        // Force the Navbar to update by triggering the storage event
         window.dispatchEvent(new Event('storage'));
 
         navigate('/dashboard');
