@@ -13,7 +13,7 @@ function Profile() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await fetch('https://railway-production-0187.up.railway.app/api/user/me', {
+        const res = await fetch('https://railway-production-0187.up.railway.app/api/auth/me', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -47,7 +47,7 @@ function Profile() {
 
   const updateProfile = async () => {
     try {
-      const res = await fetch('https://railway-production-0187.up.railway.app/api/user/update-profile', {
+      const res = await fetch('https://railway-production-0187.up.railway.app/api/auth/update-profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ function Profile() {
 
   const changePassword = async () => {
     try {
-      const res = await fetch('https://railway-production-0187.up.railway.app/api/user/change-password', {
+      const res = await fetch('https://railway-production-0187.up.railway.app/api/auth/change-password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
