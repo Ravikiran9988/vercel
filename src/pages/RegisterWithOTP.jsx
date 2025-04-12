@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles.css";
 
-// ✅ API base URL (adjust for your deployment)
+// ✅ API base URL (adjust if using a custom backend URL)
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "https://railway-production-0187.up.railway.app/api";
 
@@ -25,7 +25,7 @@ const RegisterWithOTP = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        `${API_BASE_URL}/auth/send-otp`,
+        `${API_BASE_URL}/auth/register`, // ✅ Updated endpoint here
         formData,
         {
           headers: {
@@ -35,7 +35,7 @@ const RegisterWithOTP = () => {
       );
 
       alert(res.data.message || "OTP sent to your email!");
-      navigate("/verify-otp", { state: formData });
+      navigate("/verify-otp", { state: formData }); // navigate to OTP verification
     } catch (err) {
       console.error("❌ OTP Error:", err.response?.data || err.message);
       alert(err.response?.data?.message || "Error sending OTP. Please try again.");
